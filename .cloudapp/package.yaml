@@ -49,17 +49,46 @@ args:
   - name: app_cvm
     label: cvm 机型
     widget: cvm-instance-type-select
-    region: '${network_source == "exist" ? app_network_vpc.region : app_zone.region}'
-    zone: '${network_source == "exist" ? app_network_vpc.subnet.zone : app_zone.zone}'
-    chargeType: '${charge_type == "PREPAID" ? "PREPAID" : "POSTPAID_BY_HOUR"}'
+    region: ${app_network_vpc.region
+    zone: ${app_network_vpc.subnet.zone}
     incompleteTips: 请先选择安装目标地域
+    when:
+      - eq: 
+          a: ${network_source}
+          b: "exist"
+
+  - name: app_cvm
+    label: cvm 机型
+    widget: cvm-instance-type-select
+    region: ${app_zone.region}
+    zone: ${app_zone.zone}
+    incompleteTips: 请先选择安装目标地域
+    when:
+      - eq: 
+          a: ${network_source}
+          b: "new"
 
   - name: app_cvm_image
     label: cvm 镜像
     widget: image-select
-    region: '${network_source == "exist" ? app_network_vpc.region : app_zone.region}'
+    region: ${app_network_vpc.region}
     instanceType: ${app_cvm.instance_type}
-    incompleteTips: 请先选择 cvm 镜像
+    incompleteTips: 请先选择 cvm 机型
+    when:
+      - eq: 
+          a: ${network_source}
+          b: "exist"
+
+  - name: app_cvm_image
+    label: cvm 镜像
+    widget: image-select
+    region: ${app_zone.region}
+    instanceType: ${app_cvm.instance_type}
+    incompleteTips: 请先选择 cvm 机型
+    when:
+      - eq: 
+          a: ${network_source}
+          b: "new"
 
   - name: charge_type
     label: 计费类型
