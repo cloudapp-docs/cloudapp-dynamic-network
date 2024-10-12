@@ -122,8 +122,3 @@ args:
           a: ${charge_type}
           b: "PREPAID" # 包年包月
     optional: true
-
-# 前端模块指定
-frontend:
-  runtimeMode: console
-  src: ./software/frontend/console
